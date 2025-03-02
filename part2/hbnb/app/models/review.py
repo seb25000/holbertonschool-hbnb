@@ -8,11 +8,26 @@ class Review(BaseModel):
         
         self.text = text
         self.rating = int(rating)
-        self.place = place
-        self.user = user
+        self.place_id = place.id  # Stocker seulement l'ID au lieu de l'objet complet
+        self.user_id = user.id    # Stocker seulement l'ID au lieu de l'objet complet
+        
+        # Garder des références aux objets pour faciliter l'accès
+        # mais ces attributs ne seront pas sérialisés directement
+        self._place = place
+        self._user = user
         
         # Add this review to the place's reviews
         place.add_review(self)
+
+    @property
+    def place(self):
+        """Getter for place object"""
+        return self._place
+    
+    @property
+    def user(self):
+        """Getter for user object"""
+        return self._user
 
     @staticmethod
     def validate_text(text):
@@ -42,13 +57,22 @@ class Review(BaseModel):
     def to_dict(self):
         """Convert the object to a dictionary representation"""
         result = super().to_dict()
-        # Convert user to dict
-        if hasattr(self, 'user'):
-            result['user'] = self.user.to_dict()
-        # Convert place to minimal dict to avoid circular references
-        if hasattr(self, 'place'):
-            result['place'] = {
-                'id': self.place.id,
-                'title': self.place.title
+        
+        # Ajouter des informations minimales sur l'utilisateur
+        if hasattr(self, '_user'):
+            result['user'] = {
+                'id': self._user.id,
+                'first_name': self._user.first_name,
+                'last_name': self._user.last_name,
+                'email': self._user.email
             }
+        
+        # Ajouter des informations minimales sur le lieu
+        if hasattr(self, '_place'):
+            result['place'] = {
+                'id': self._place.id,
+                'name': self._place.name
+            }
+            
         return result
+    
