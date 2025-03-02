@@ -2,6 +2,8 @@ import re
 import hashlib
 import os
 from app.models.base import BaseModel
+import uuid
+from datetime import datetime
 
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, password=None, is_admin=False):
@@ -108,19 +110,42 @@ class User(BaseModel):
 
     def to_dict(self):
         """Convert the object to a dictionary representation"""
-        result = super().to_dict()
+        # Obtenir d'abord les attributs de base (id, created_at, updated_at)
+        try:
+            base_dict = super().to_dict()
+        except Exception:
+            # Si super().to_dict() échoue, créer un dictionnaire de base minimal
+            base_dict = {
+                'id': getattr(self, 'id', str(uuid.uuid4())),
+                'created_at': getattr(self, 'created_at', datetime.now()).isoformat() if hasattr(self, 'created_at') else datetime.now().isoformat(),
+                'updated_at': getattr(self, 'updated_at', datetime.now()).isoformat() if hasattr(self, 'updated_at') else datetime.now().isoformat()
+            }
         
-        # Ne jamais inclure le hash ou le sel du mot de passe dans la sérialisation
-        if 'password_hash' in result:
-            del result['password_hash']
-        if 'password_salt' in result:
-            del result['password_salt']
-            
-        # Convertir les places en représentation minimale pour éviter les références circulaires
+        # Définir les attributs spécifiques à l'utilisateur avec des valeurs par défaut sûres
+        user_dict = {
+            'first_name': getattr(self, 'first_name', None),
+            'last_name': getattr(self, 'last_name', None),
+            'email': getattr(self, 'email', None),
+            'is_admin': getattr(self, 'is_admin', False),
+            'places': []
+        }
+        
+        # Fusionner les dictionnaires en donnant la priorité aux attributs utilisateur
+        result = {**base_dict, **user_dict}
+        
+        # Supprimer explicitement les informations sensibles
+        result.pop('password_hash', None)
+        result.pop('password_salt', None)
+        
+        # Gérer la liste des places de manière sécurisée
         if hasattr(self, 'places') and self.places:
-            result['places'] = [{
-                'id': place.id,
-                'name': place.name
-            } for place in self.places]
-            
+            try:
+                result['places'] = [{
+                    'id': place.id,
+                    'name': place.name if hasattr(place, 'name') else place.title if hasattr(place, 'title') else "Unnamed Place"
+                } for place in self.places if hasattr(place, 'id')]
+            except Exception as e:
+                # En cas d'erreur, garder une liste vide plutôt que de faire échouer la sérialisation
+                result['places'] = []
+        
         return result
