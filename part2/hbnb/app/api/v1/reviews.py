@@ -3,21 +3,6 @@ from app.services import facade
 
 api = Namespace('reviews', description='Review operations')
 
-# Define the user model for nested responses
-user_model = api.model('ReviewUser', {
-    'id': fields.String(description='User ID'),
-    'first_name': fields.String(description='First name of the user'),
-    'last_name': fields.String(description='Last name of the user'),
-    'email': fields.String(description='Email address')
-})
-
-# Define the place model for nested responses
-place_model = api.model('ReviewPlace', {
-    'id': fields.String(description='Place ID'),
-    'title': fields.String(description='Title of the place')
-})
-
-# Define the review model for input validation and documentation
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
@@ -25,91 +10,90 @@ review_model = api.model('Review', {
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
-# Define the review response model
-review_response_model = api.model('ReviewResponse', {
-    'id': fields.String(description='Review ID'),
-    'text': fields.String(description='Text of the review'),
-    'rating': fields.Integer(description='Rating of the place (1-5)'),
-    'user': fields.Nested(user_model, description='User who wrote the review'),
-    'place': fields.Nested(place_model, description='Place being reviewed'),
-    'created_at': fields.String(description='Creation timestamp'),
-    'updated_at': fields.String(description='Last update timestamp')
-})
-
 @api.route('/')
 class ReviewList(Resource):
-    @api.doc('create_review')
-    @api.expect(review_model, validate=True)
-    @api.response(201, 'Review successfully created', review_response_model)
+    @api.expect(review_model)
+    @api.response(201, 'Review successfully created')
     @api.response(400, 'Invalid input data')
-    @api.response(404, 'User or place not found')
-    @api.marshal_with(review_response_model, code=201)
     def post(self):
-        """Register a new review"""
+        review_data = api.payload
         try:
-            new_review = facade.create_review(api.payload)
-            return new_review.to_dict(), 201
+            new_review = facade.create_review(review_data)
+            return {
+                'id': new_review.id,
+                'text': new_review.text,
+                'rating': new_review.rating,
+                'user_id': new_review.user.id,
+                'place_id': new_review.place.id
+            }, 201
         except ValueError as e:
-            api.abort(400, str(e))
+            return {'error': str(e)}, 400
 
-    @api.doc('list_reviews')
     @api.response(200, 'List of reviews retrieved successfully')
-    @api.marshal_list_with(review_response_model)
     def get(self):
-        """Retrieve a list of all reviews"""
         reviews = facade.get_all_reviews()
-        return [review.to_dict() for review in reviews]
+        return [{
+            'id': review.id,
+            'text': review.text,
+            'rating': review.rating,
+            'user_id': review.user.id,
+            'place_id': review.place.id
+        } for review in reviews], 200
+
 
 @api.route('/<review_id>')
-@api.param('review_id', 'The review identifier')
 class ReviewResource(Resource):
-    @api.doc('get_review')
-    @api.response(200, 'Review details retrieved successfully', review_response_model)
+    @api.response(200, 'Review details retrieved successfully')
     @api.response(404, 'Review not found')
-    @api.marshal_with(review_response_model)
     def get(self, review_id):
-        """Get review details by ID"""
-        review = facade.get_review(review_id)
-        if not review:
-            api.abort(404, 'Review not found')
-        return review.to_dict()
+        try:
+            review = facade.get_review(review_id)
+            if not review:
+                return {'error': 'Review not found'}, 404
+            return {
+                'id': review.id,
+                'text': review.text,
+                'rating': review.rating,
+                'user_id': review.user.id,
+                'place_id': review.place.id
+            }, 200
+        except ValueError:
+            return {'error': 'Review not found'}, 404
 
-    @api.doc('update_review')
     @api.expect(review_model)
-    @api.response(200, 'Review updated successfully', review_response_model)
+    @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
     @api.response(400, 'Invalid input data')
-    @api.marshal_with(review_response_model)
     def put(self, review_id):
-        """Update a review's information"""
+        review_data = api.payload
         try:
-            review = facade.update_review(review_id, api.payload)
-            if not review:
-                api.abort(404, 'Review not found')
-            return review.to_dict()
+            facade.update_review(review_id, review_data)
+            return {'message': 'Review updated successfully'}, 200
         except ValueError as e:
-            api.abort(400, str(e))
+            return {'error': str(e)},  400 if "Rating" in str(e) else 404
 
-    @api.doc('delete_review')
+
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
     def delete(self, review_id):
-        """Delete a review"""
-        if facade.delete_review(review_id):
-            return {'message': 'Review deleted successfully'}
-        api.abort(404, 'Review not found')
+        try:
+            facade.delete_review(review_id)
+            return {'message': 'Review deleted successfully'}, 200
+        except ValueError:
+            return {'error': 'Review not found'}, 404
 
 @api.route('/places/<place_id>/reviews')
-@api.param('place_id', 'The place identifier')
 class PlaceReviewList(Resource):
-    @api.doc('get_place_reviews')
     @api.response(200, 'List of reviews for the place retrieved successfully')
     @api.response(404, 'Place not found')
-    @api.marshal_list_with(review_response_model)
     def get(self, place_id):
-        """Get all reviews for a specific place"""
         try:
             reviews = facade.get_reviews_by_place(place_id)
-            return [review.to_dict() for review in reviews]
+            return [{
+                'id': review.id,
+                'text': review.text,
+                'rating': review.rating,
+                'user_id': review.user.id
+                } for review in reviews], 200
         except ValueError:
-            api.abort(404, 'Place not found')
+            return {'error': 'Place not found'}, 404

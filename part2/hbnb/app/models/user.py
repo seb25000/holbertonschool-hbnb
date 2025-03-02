@@ -1,48 +1,39 @@
-import re
-from app.models.base import BaseModel
+from app.models.base_model import BaseModel
+
 
 class User(BaseModel):
+    """
+    User class that defines the users, with name, last name, email and role.
+    """
     def __init__(self, first_name, last_name, email, is_admin=False):
         super().__init__()
-        self.validate_name(first_name, "first_name")
-        self.validate_name(last_name, "last_name")
-        self.validate_email(email)
-        
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
-        self.places = []  # List to store owned places
+
+
+    def validate(self):
+        if not self.first_name or len(self.first_name) > 50:
+            raise ValueError("First name is required and must be 50 characters or less")
+        if not self.last_name or len(self.last_name) > 50:
+            raise ValueError("Last name is required and must be 50 characters or less")
+        if not self.email or '@' not in self.email:
+            raise ValueError("Valid email is required")
+
 
     @staticmethod
-    def validate_name(name, field):
-        """Validate name fields"""
-        if not name or not isinstance(name, str):
-            raise ValueError(f"{field} is required and must be a string")
-        if len(name) > 50:
-            raise ValueError(f"{field} must not exceed 50 characters")
+    def is_valid_email(email):
+        """Basic email validation"""
+        return "@" in email and "." in email
 
-    @staticmethod
-    def validate_email(email):
-        """Validate email format"""
-        if not email or not isinstance(email, str):
-            raise ValueError("Email is required and must be a string")
-        
-        email_pattern = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-        if not email_pattern.match(email):
-            raise ValueError("Invalid email format")
-
-    def add_place(self, place):
-        """Add a place to user's owned places"""
-        self.places.append(place)
 
     def update(self, data):
-        """Update user attributes with validation"""
-        if 'first_name' in data:
-            self.validate_name(data['first_name'], "first_name")
-        if 'last_name' in data:
-            self.validate_name(data['last_name'], "last_name")
-        if 'email' in data:
-            self.validate_email(data['email'])
-        
         super().update(data)
+        self.validate()
+
+
+        def __repr__(self):
+            return (f"User (id='{self.id}', first_name='{self.first_name}', "
+                    f"last_name='{self.last_name}', email='{self.email}', "
+                    f"is_admin{self.is_admin})")
