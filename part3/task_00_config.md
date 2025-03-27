@@ -1,52 +1,25 @@
-#!/usr/bin/python3
+import os
 from flask import Flask
-from flask_restx import Api
-from app.api.v1.users import api as users_ns
-from app.api.v1.amenities import api as amenities_ns
-from app.api.v1.places import api as places_ns
-from app.api.v1.reviews import api as reviews_ns
-importlib.metadata.version("flask-sqlalchemy")
-
-def create_app(config_class="config.DevelopmentConfig"):
+def create_app(config):
+    """Creates and configures the Flask application."""
     app = Flask(__name__)
-    app.config['TESTING'] = True
-    app.config.from_object(config_class)
-    app.config.from_pyfile(config_filename)
-    api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API', doc='/api/v1/')
+    # Load configuration from the provided object
+    app.config.from_object(config)
 
-    # Register the namespaces
-    api.add_namespace(users_ns, path='/api/v1/users')
-    api.add_namespace(amenities_ns, path='/api/v1/amenities')
-    api.add_namespace(places_ns, path='/api/v1/places')
-    api.add_namespace(reviews_ns, path='/api/v1/reviews')
-    # ajout import
-    from yourapplication.model import db
-    db.init_app(app)
+    # Example: Check if database URI is loaded.
+    # You can add your logging or debugging lines to make sure config is correctly passed
+    # app.logger.debug(f"Database URI: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
 
-    from config_class.views.admin import admin
-    from config_class.views.frontend import frontend
-    from flask import current_app, Blueprint, render_template
-    admin = Blueprint('admin', __name__, url_prefix='/admin')
-    @admin.route('/')
-    def index():
-    return render_template(current_app.config['INDEX_TEMPLATE'])
-    app.register_blueprint(admin)
-    app.register_blueprint(frontend)
-    # fin ajout import
-    # Placeholder for API namespaces (endpoints will be added later)
-    # Additional namespaces for places, reviews, and amenities will be added later
+    # Example: Register blueprints (assuming you have them defined)
+    # from . import routes  # Import your routes module
+    # app.register_blueprint(routes.bp)  # Register your blueprint
 
-def create_app(config_class):
-    app = Flask(__name__)
-    app.config.from_pyfile(config_class)
-
-    db = SQLAlchemy(app)
-
-def create_app(config_class):
-    app = Flask(__name__)
-    app.config.from_pyfile(config_class)
-
-    from config_class.model import db
-    db.init_app(app)
+    # More example for database:
+    # from . import models
+    # models.db.init_app(app)
 
     return app
+
+# Example Usage (not part of app/__init__.py, this is for example purposes only)
+# from config import DevelopmentConfig
+# app = create_app(DevelopmentConfig)
