@@ -3,7 +3,7 @@ sequenceDiagram
     participant User
     participant API
     participant BusinessLogic
-    participant Database
+    participant DatabaseP
     User->>API: GET /places (search criteria)
     API->>BusinessLogic: fetchPlaces(criteria)
     BusinessLogic->>Database: getPlaces(criteria)
