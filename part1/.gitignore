@@ -1,0 +1,5 @@
+# Ignore tous les répertoires venv
+**/venv/
+# Ignore les fichiers Python compilés
+*.pyc
+*.pyo
