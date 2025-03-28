@@ -106,4 +106,8 @@ You are tasked with documenting the architecture and design of a simplified vers
 
 By the end of this part, you should have a complete set of technical documentation that provides a clear and detailed blueprint for the HBnB Evolution application. This documentation will not only guide you through the implementation phases but also ensure that you have a solid understanding of the application's design and architecture.
 
+<<<<<<< HEAD
 Good luck, and remember to leverage the provided resources and your own research to overcome any challenges you encounter!
+=======
+Good luck, and remember to leverage the provided resources and your own research to overcome any challenges you encounter!
+>>>>>>> alex-branch

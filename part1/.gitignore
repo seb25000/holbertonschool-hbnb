@@ -1,0 +1,9 @@
+# Ignorer le dossier venv
+**/venv/
+
+# Ignorer les fichiers Python bytecode
+**/__pycache__/
+
+# Ignorer les dossiers part2 et part3
+part2/
+part3/
