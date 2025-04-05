@@ -1,0 +1,324 @@
+/* Basic Reset / Normalize (Optional but Recommended) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif; /* Choose your font */
+    line-height: 1.6;
+    color: #333; /* Choose your color palette */
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px 0;
+    flex: 1; /* Makes container fill space between header/footer */
+}
+
+/* Header */
+header {
+    background: #fff; /* Choose your color palette */
+    color: #333;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    position: sticky; /* Keep header visible */
+    top: 0;
+    z-index: 1000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%; /* Wider container for header */
+}
+
+header .logo {
+    height: 50px; /* Adjust size as needed */
+}
+
+header nav ul {
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin-left: 15px;
+}
+
+header nav ul li a,
+.login-button, /* Style login button/link */
+.logout-button {
+    color: #333; /* Choose your color palette */
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+header nav ul li a:hover,
+.login-button:hover,
+.logout-button:hover {
+    background-color: #eee; /* Choose your color palette */
+}
+
+.login-button,
+.logout-button {
+    border: 1px solid #ccc;
+}
+
+
+/* Footer */
+footer {
+    background: #333; /* Choose your color palette */
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 30px; /* Add some space above footer */
+}
+
+/* Forms */
+.form-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 30px auto;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.btn {
+    display: inline-block;
+    background: #5cb85c; /* Choose your color palette */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1em;
+    width: 100%;
+    text-align: center;
+}
+
+.btn:hover {
+    background: #4cae4c; /* Choose your color palette */
+}
+
+/* Error Message Styling */
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+/* Index Page - Places List */
+#filter-section {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#filter-section label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#filter-section select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+
+#places-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    gap: 20px;
+}
+
+.place-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px; /* Increased padding */
+    margin: 0; /* Grid gap handles spacing, remove card margin */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes button to bottom */
+}
+
+.place-card img {
+    max-width: 100%;
+    height: 180px; /* Fixed height for images */
+    object-fit: cover; /* Crop images nicely */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+
+.place-card h3 {
+    margin-bottom: 5px;
+    font-size: 1.2em;
+}
+
+.place-card p {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 10px;
+    flex-grow: 1; /* Allows description to take up space */
+}
+
+.place-card .price {
+    font-weight: bold;
+    color: #007bff; /* Choose your color palette */
+    margin-bottom: 15px;
+}
+
+.details-button {
+    display: block; /* Make button take full width */
+    background: #007bff; /* Choose your color palette */
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    margin-top: auto; /* Pushes button down */
+    transition: background-color 0.3s;
+}
+
+.details-button:hover {
+    background: #0056b3; /* Choose your color palette */
+}
+
+/* Place Details Page */
+.place-details-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.place-info h2 {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.place-info p, .place-info div {
+    margin-bottom: 10px;
+}
+
+.place-info strong {
+    display: inline-block;
+    width: 120px; /* Align labels */
+}
+
+.place-info ul {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+#place-images {
+    display: flex; /* Simple horizontal layout for images */
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto; /* Allow scrolling if many images */
+}
+
+#place-images img {
+    max-height: 150px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+
+/* Reviews Section */
+#reviews-section h3 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+#reviews-list {
+    display: grid;
+    gap: 20px;
+}
+
+.review-card {
+    background: #f9f9f9; /* Slightly different background for reviews */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px; /* Consistent padding */
+    margin: 0; /* Let grid handle spacing */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.review-card p {
+    margin-bottom: 5px;
+}
+
+.review-card strong {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.review-card .rating span {
+    color: #f8d64e; /* Star color */
+}
+
+
+/* Add Review Section/Form */
+#add-review {
+    margin-top: 30px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}

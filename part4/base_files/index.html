@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HbBnB - Homes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/icon.png" type="image/png"> <!-- Favicon -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html"><img src="images/logo.png" alt="HbBnB Logo" class="logo"></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="login.html" class="login-button" id="login-link">Login</a></li>
+                    <li><button class="logout-button hidden" id="logout-button">Logout</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Available Places</h1>
+
+        <!-- Filter Section -->
+        <section id="filter-section" class="hidden"> <!-- Hide initially until places load -->
+            <label for="price-filter">Filter by Max Price ($):</label>
+            <select id="price-filter">
+                <option value="all">All</option>
+                <option value="50">$50</option>
+                <option value="100">$100</option>
+                <option value="200">$200</option>
+                <option value="500">$500</option>
+            </select>
+        </section>
+
+        <!-- Places List Container -->
+        <section id="places-list">
+            <!-- Place cards will be dynamically inserted here -->
+            <p id="loading-message">Loading places...</p>
+        </section>
+
+        <p id="auth-message" class="hidden" style="text-align: center; margin-top: 20px;">
+            Please <a href="login.html">login</a> to view available places.
+        </p>
+    </main>
+
+    <footer>
+        <p>© 2024 HbBnB. All rights reserved.</p>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
