@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Add Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="images/icon.png" type="image/png">
+</head>
+<body>
+    <header>
+        <img src="/images/logo.png" alt="HBNB Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Logout</a></li> <!-- Assume user is logged in -->
+            </ul>
+        </nav>
+        <img src="../images/icon.png" class="logo" alt="Application Logo">
+    </header>
+
+    <main>
+        <section class="add-review-page-container"> <!-- Specific container for this page -->
+            <h1>Add Review for [Place Name]</h1> <!-- Replace [Place Name] or pass dynamically -->
+
+            <form action="#" method="post" class="form add-review"> <!-- Re-use form styles -->
+                 <div>
+                     <label for="rating">Rating:</label>
+                     <select id="rating" name="rating" required>
+                        <option value="" disabled selected>Select rating</option>
+                        <option value="5">★★★★★ (Excellent)</option>
+                        <option value="4">★★★★☆ (Great)</option>
+                        <option value="3">★★★☆☆ (Average)</option>
+                        <option value="2">★★☆☆☆ (Fair)</option>
+                        <option value="1">★☆☆☆☆ (Poor)</option>
+                     </select>
+                 </div>
+                 <div>
+                     <label for="comment">Comment:</label>
+                     <textarea id="comment" name="comment" required rows="6" placeholder="Share details about your stay..."></textarea>
+                 </div>
+                 <button type="submit">Submit Review</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 HBNB. All rights reserved.</p>
+    </footer>
+
+    
+</body>
+</html>

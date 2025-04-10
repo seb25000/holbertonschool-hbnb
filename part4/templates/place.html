@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Place Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="images/icon.png" type="image/png">
+</head>
+<body>
+    <header>
+        <img src="images/logo.png" alt="HBNB Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login</a></li> <!-- Or Logout if logged in -->
+            </ul>
+        </nav>
+        <!-- <a href="login.html" class="login-button">Login</a> -->
+    </header>
+
+    <main class="place-details">
+        <h1>Cozy Beach House</h1> <!-- Should dynamically match the place -->
+        <img src="images/place_detail.jpg" alt="Detailed view of Cozy Beach House">
+
+        <section class="place-info">
+            <h2>Information</h2>
+            <p><strong>Host:</strong> Jane Doe</p>
+            <p><strong>Price:</strong> $120 / night</p>
+            <p><strong>Location:</strong> Sunny Beach, CA</p>
+            <p><strong>Max Guests:</strong> 4</p>
+            <p><strong>Description:</strong> A lovely spot right on the beach, perfect for a weekend getaway. Enjoy the sound of the waves and beautiful sunsets from the deck. Fully equipped kitchen and comfortable living spaces.</p>
+
+            <h2>Amenities</h2>
+            <ul>
+                <li>WiFi</li>
+                <li>Beach Access</li>
+                <li>Kitchen</li>
+                <li>Free Parking</li>
+                <li>Air Conditioning</li>
+            </ul>
+        </section>
+
+        <section class="reviews">
+            <h2>Reviews</h2>
+
+            <article class="review-card">
+                <p class="user-info">User: John S. | Rating: <span class="rating">★★★★☆</span></p>
+                <p class="comment">Wonderful location! The house was clean and had everything we needed. Minor issue with the Wi-Fi speed, but overall a great stay.</p>
+            </article>
+
+            <article class="review-card">
+                <p class="user-info">User: Maria G. | Rating: <span class="rating">★★★★★</span></p>
+                <p class="comment">Absolutely perfect! We loved waking up to the ocean view. Highly recommend this place.</p>
+            </article>
+
+             <article class="review-card">
+                <p>No reviews yet.</p> <!-- Show this if there are no reviews -->
+            </article>
+
+        </section>
+
+        <!-- Add Review Section (Simulated: visible to all in this static example) -->
+        <!-- In a real app, this section would be conditionally shown only to logged-in users -->
+        <section class="add-review">
+            <h2>Add Your Review</h2>
+
+            <!-- OPTION 1: Button linking to a separate review page -->
+             <!-- <a href="add_review.html" class="button details-button">Add Review</a> -->
+             <!-- Note: using details-button class for consistent styling, but could be a unique class -->
+
+             <!-- OPTION 2: Embedded Form (as per optional requirement) -->
+            <form action="#" method="post" class="form">
+                 <div>
+                     <label for="rating">Rating:</label>
+                     <select id="rating" name="rating" required>
+                        <option value="" disabled selected>Select rating</option>
+                        <option value="5">★★★★★ (Excellent)</option>
+                        <option value="4">★★★★☆ (Great)</option>
+                        <option value="3">★★★☆☆ (Average)</option>
+                        <option value="2">★★☆☆☆ (Fair)</option>
+                        <option value="1">★☆☆☆☆ (Poor)</option>
+                     </select>
+                 </div>
+                 <div>
+                     <label for="comment">Comment:</label>
+                     <textarea id="comment" name="comment" required rows="4" placeholder="Share your experience..."></textarea>
+                 </div>
+                 <button type="submit">Submit Review</button>
+            </form>
+
+        </section>
+
+
+
+    </main>
+
+    <footer>
+        <p>© 2023 HBNB. All rights reserved.</p>
+    </footer>
+
+
+</body>
+</html>
